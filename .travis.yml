@@ -1,0 +1,36 @@
+branches:
+  only:
+  - master
+  - preview
+sudo: false
+language: node_js
+cache:
+  directories:
+  - node_modules
+node_js:
+- stable
+- 6.9.1
+- 8.15.0
+- 10.15.3
+script: npm run build
+
+jobs:
+  include:
+    - stage: npm release
+      node_js: stable
+      deploy:
+        - provider: npm
+          email: "wictor@wictorwilen.se"
+          api_key:
+            secure: qiJdAMhjFLnRShHdnmHn7wdBk9itkkgbcclf4BUCxNebT2r3rCHP5h/Y50kK6EQUrBBtEuGcy1mwkCmkfZBEbpychzS5pI+octAkW3ymACIWPmqMmUtQLu24aS44bsIUWGh5+D/2Q5iFN52AGAEnIGtwKAWhZlesL14vj6KZVw58K7EiOjN3Acv0/2B0TnDfeeVoYlXJghuThRi5mXXoe55oM6kCZ6KU4Cr8zy14EiJjN4IdT1L0lU/OsXmL7GM9RSozlx3ZZjcwh2PDjiR6nyf4kmd0ZRv9AUi2PsQS1xx7ueUMUvIkyFnLLGYFvA/4S5XLxnLzIka8qEMZWBQLmqOcdgUESd2PW+5vp9HOF5A+M5NI35kYh4RyDvq1Ir69Z/xNWn1WycI1ftEAzDiUazsNiALSCPPBHEgBC1s30GazSVHJfo106O2XAzF1iUA+vlbMAWeEmPyxNzzE+oC+rZ04alMEvSBN5Wmd0/oLRnrabgl/zRsK38JN6wWVxVNU38Ae+17kdPoY+s8+V0yNAYxvgjHZvkfHh0d9nLCZe1/4dX2zg1t83L9zIEhxCgpTqQLWPFsNRNQg4DK8hfP8T3yZuZi+HknZ8YC09kgEBUcSJbIHIPK+OZHBlvJEz+oOm9U15GJJgcec4kYfh/+bCJtyzsTLzBvOlISPH2/9Hd4=
+          skip_cleanup: true
+          tag: preview
+          on:
+            branch: preview
+        - provider: npm
+          email: "wictor@wictorwilen.se"
+          api_key:
+            secure: qiJdAMhjFLnRShHdnmHn7wdBk9itkkgbcclf4BUCxNebT2r3rCHP5h/Y50kK6EQUrBBtEuGcy1mwkCmkfZBEbpychzS5pI+octAkW3ymACIWPmqMmUtQLu24aS44bsIUWGh5+D/2Q5iFN52AGAEnIGtwKAWhZlesL14vj6KZVw58K7EiOjN3Acv0/2B0TnDfeeVoYlXJghuThRi5mXXoe55oM6kCZ6KU4Cr8zy14EiJjN4IdT1L0lU/OsXmL7GM9RSozlx3ZZjcwh2PDjiR6nyf4kmd0ZRv9AUi2PsQS1xx7ueUMUvIkyFnLLGYFvA/4S5XLxnLzIka8qEMZWBQLmqOcdgUESd2PW+5vp9HOF5A+M5NI35kYh4RyDvq1Ir69Z/xNWn1WycI1ftEAzDiUazsNiALSCPPBHEgBC1s30GazSVHJfo106O2XAzF1iUA+vlbMAWeEmPyxNzzE+oC+rZ04alMEvSBN5Wmd0/oLRnrabgl/zRsK38JN6wWVxVNU38Ae+17kdPoY+s8+V0yNAYxvgjHZvkfHh0d9nLCZe1/4dX2zg1t83L9zIEhxCgpTqQLWPFsNRNQg4DK8hfP8T3yZuZi+HknZ8YC09kgEBUcSJbIHIPK+OZHBlvJEz+oOm9U15GJJgcec4kYfh/+bCJtyzsTLzBvOlISPH2/9Hd4=
+          skip_cleanup: true
+          on:
+            branch: master    

@@ -1,0 +1,34 @@
+{
+  "name": "botbuilder-teams-messagingextensions",
+  "version": "1.0.0",
+  "description": "Microsoft Bot Builder Framework v4 middleware for Microsoft Teams Messaging Extensions",
+  "main": "lib/index.js",
+  "scripts": {
+    "build": "tsc -p .",
+    "clean": "rm -rf lib",
+    "lint": "tslint --project ."
+  },
+  "keywords": [
+    "microsoft-teams",
+    "msteams",
+    "botbuidler"
+  ],
+  "author": "Wictor Wilén",
+  "maintainers": [
+    {
+      "name": "Wictor Wilén",
+      "email": "wictor@wictorwilen.se",
+      "url": "http://www.wictorwilen.se"
+    }
+  ],
+  "license": "MIT",
+  "devDependencies": {
+    "botbuilder-teams": "^4.0.0-beta1",
+    "ms-rest-js": "^1.0.1",
+    "tslint": "^5.14.0",
+    "typescript": "^3.3.4000"
+  },
+  "dependencies": {
+    "botbuilder": "^4.3.4"
+  }
+}
