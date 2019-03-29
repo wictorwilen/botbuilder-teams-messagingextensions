@@ -13,26 +13,25 @@ node_js:
 - 8.15.0
 - 10.15.3
 script: npm run build
-
 jobs:
   include:
-    - stage: npm release
-      node_js: stable
-      deploy:
-        - provider: npm
-          email: "wictor@wictorwilen.se"
-          api_key:
-            secure: TODO
-          skip_cleanup: true
-          tag: preview
-          on:
-            branch: preview
-            tags: true
-        - provider: npm
-          email: "wictor@wictorwilen.se"
-          api_key:
-            secure: TODO
-          skip_cleanup: true
-          on:
-            branch: master  
-            tags: true  
+  - stage: npm release
+    node_js: stable
+    deploy:
+    - provider: npm
+      email: wictor@wictorwilen.se
+      api_key:
+        secure: Nl6drnHb3Zlr7wEh6YuHFYPepxPkCq4FWugIhFP0PIe1wh2LFIDVkui0Ym8Uqy7/IeC2eUz+iFkEjstyuGH+xjtu0V2ttJfAoKHh4NfJrF0yBDbWx66CzIyBE4RO31y7MBKno6zlTavqHtMmMCzNJIxqa3HKe4z681qPiuq4MPIO9iy153m0BxPLowd9XhVbn8xA/VFY8kAQcbE3+97CMA713q3sVOPF3wvYqAN8KSKElSEbtCqh3zyQgKb6YEFt1lvLZ/pUR7ljFASCLVbxRQur5FR2cM5wvd/pBzVaq2T23yUtuZLK6Xm7NtP0vm3xGYGYrAYXGy795azapIczARGZONWaE5j8ZEVz8Xf3uUVXdbBJpBP93BdkSOeGdtLguMLvsu+F266bb6zcUc9mou8Eu/ee2vN+jW9mSaM7TFVH1+yXS83/3nXWD0kqhNPgPNjnuqhWHEoWOEre8YYxtQJIg6aRinn0ZgHUD76fcwjk+AqsVRNTecFEjD8yf9Zo4EvlPT8Dc+3wRcYZBnm70T4dIwI5tymgqT4Hw810hXMYCsEvUhqfhW2AfUnM0hYX+s5EGhMdQ/q0CQdxJy0NF32c3lJiWHJtIFUn33jzxd8aDktJb61gcaSC3C+Qf5VQCUSgJl7V2RI1XFzUyHwkb8zIemf0UaF8s2Ggi+US6Vo=
+      skip_cleanup: true
+      tag: preview
+      on:
+        branch: preview
+        tags: true
+    - provider: npm
+      email: wictor@wictorwilen.se
+      api_key:
+        secure: Nl6drnHb3Zlr7wEh6YuHFYPepxPkCq4FWugIhFP0PIe1wh2LFIDVkui0Ym8Uqy7/IeC2eUz+iFkEjstyuGH+xjtu0V2ttJfAoKHh4NfJrF0yBDbWx66CzIyBE4RO31y7MBKno6zlTavqHtMmMCzNJIxqa3HKe4z681qPiuq4MPIO9iy153m0BxPLowd9XhVbn8xA/VFY8kAQcbE3+97CMA713q3sVOPF3wvYqAN8KSKElSEbtCqh3zyQgKb6YEFt1lvLZ/pUR7ljFASCLVbxRQur5FR2cM5wvd/pBzVaq2T23yUtuZLK6Xm7NtP0vm3xGYGYrAYXGy795azapIczARGZONWaE5j8ZEVz8Xf3uUVXdbBJpBP93BdkSOeGdtLguMLvsu+F266bb6zcUc9mou8Eu/ee2vN+jW9mSaM7TFVH1+yXS83/3nXWD0kqhNPgPNjnuqhWHEoWOEre8YYxtQJIg6aRinn0ZgHUD76fcwjk+AqsVRNTecFEjD8yf9Zo4EvlPT8Dc+3wRcYZBnm70T4dIwI5tymgqT4Hw810hXMYCsEvUhqfhW2AfUnM0hYX+s5EGhMdQ/q0CQdxJy0NF32c3lJiWHJtIFUn33jzxd8aDktJb61gcaSC3C+Qf5VQCUSgJl7V2RI1XFzUyHwkb8zIemf0UaF8s2Ggi+US6Vo=
+      skip_cleanup: true
+      on:
+        branch: master
+        tags: true
