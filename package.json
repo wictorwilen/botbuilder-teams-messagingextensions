@@ -1,6 +1,6 @@
 {
   "name": "botbuilder-teams-messagingextensions",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "Microsoft Bot Builder Framework v4 middleware for Microsoft Teams Messaging Extensions",
   "main": "lib/index.js",
   "scripts": {
