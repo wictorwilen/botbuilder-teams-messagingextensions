@@ -11,7 +11,9 @@
   "keywords": [
     "microsoft-teams",
     "msteams",
-    "botbuidler"
+    "botbuilder",
+    "botbuilder-extension",
+    "botbuilder-middleware"
   ],
   "author": "Wictor Wilén",
   "maintainers": [
