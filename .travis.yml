@@ -13,23 +13,24 @@ node_js:
 - 8.15.0
 - 10.15.3
 script: npm run build
+
 jobs:
   include:
   - stage: npm release
     node_js: stable
     deploy:
     - provider: npm
-      email: wictor@wictorwilen.se
+      email: "wictor@wictorwilen.se"
       api_key:
-        secure: Nl6drnHb3Zlr7wEh6YuHFYPepxPkCq4FWugIhFP0PIe1wh2LFIDVkui0Ym8Uqy7/IeC2eUz+iFkEjstyuGH+xjtu0V2ttJfAoKHh4NfJrF0yBDbWx66CzIyBE4RO31y7MBKno6zlTavqHtMmMCzNJIxqa3HKe4z681qPiuq4MPIO9iy153m0BxPLowd9XhVbn8xA/VFY8kAQcbE3+97CMA713q3sVOPF3wvYqAN8KSKElSEbtCqh3zyQgKb6YEFt1lvLZ/pUR7ljFASCLVbxRQur5FR2cM5wvd/pBzVaq2T23yUtuZLK6Xm7NtP0vm3xGYGYrAYXGy795azapIczARGZONWaE5j8ZEVz8Xf3uUVXdbBJpBP93BdkSOeGdtLguMLvsu+F266bb6zcUc9mou8Eu/ee2vN+jW9mSaM7TFVH1+yXS83/3nXWD0kqhNPgPNjnuqhWHEoWOEre8YYxtQJIg6aRinn0ZgHUD76fcwjk+AqsVRNTecFEjD8yf9Zo4EvlPT8Dc+3wRcYZBnm70T4dIwI5tymgqT4Hw810hXMYCsEvUhqfhW2AfUnM0hYX+s5EGhMdQ/q0CQdxJy0NF32c3lJiWHJtIFUn33jzxd8aDktJb61gcaSC3C+Qf5VQCUSgJl7V2RI1XFzUyHwkb8zIemf0UaF8s2Ggi+US6Vo=
+        secure: E5KQERBzNNvBGsMU2ts2Xi6cvcCBHV5otcjpS8DKApLhnZ69w57hcOjfxDV8XJTyeyKXp2XxSaOXLHKfhgXtE1d0QZFe2AX2JG1TQvnhYAssE53hgExKST6G0R85WTctWjytYOidCfCi5mxPxlpn+N4R/GiYR9Z4GnLi5NWTm1smwmZIOQu/x8gIHmCpGeDIGutKqgqMzr94PXzs1xT3Q02HYWv55bfPLLMoHRo7t3KQBuQmVnMsQneS1phJBziamAgwiZ8PRBDithQlB6SCMaYPaHNp2FvS3+jWDe9pTDauF74X+4ZYiWEpeFAin2IuWtzCPxhoQtdXWHCjUMiN8DLayVqprLgZrC3StEZgwLB9SaJqqe2d1QB/XPJBx5UjXp5gDlpG0HFaFbzlNh3p3RXdbHq4Cu+czEcoPwYBi7yEKxQxvsyZ+WnsZFnscq86kexRlXQPOIMUWRH5i/kJLDSZm2+ByDzK8mT6j9lYCtkvppvIocQw9HKdqdpgpzwTmYLeHTh2XngCF7ToZemfkrPA2u6dkuAPgzwEhCpEkNXHdzN00nUIs0lhJfqSPbakRamydERyOCYl0nAWTrOwcI4qwRtTvBklUgEA/EQ6mJFdf0HqgYzMjlCiXqA1D1VsKrwRGI/O/5suljTqktFFbHUW37uNZybBwzL15eatOU0=
       skip_cleanup: true
       tag: preview
       on:
         branch: preview
     - provider: npm
-      email: wictor@wictorwilen.se
+      email: "wictor@wictorwilen.se"
       api_key:
-        secure: Nl6drnHb3Zlr7wEh6YuHFYPepxPkCq4FWugIhFP0PIe1wh2LFIDVkui0Ym8Uqy7/IeC2eUz+iFkEjstyuGH+xjtu0V2ttJfAoKHh4NfJrF0yBDbWx66CzIyBE4RO31y7MBKno6zlTavqHtMmMCzNJIxqa3HKe4z681qPiuq4MPIO9iy153m0BxPLowd9XhVbn8xA/VFY8kAQcbE3+97CMA713q3sVOPF3wvYqAN8KSKElSEbtCqh3zyQgKb6YEFt1lvLZ/pUR7ljFASCLVbxRQur5FR2cM5wvd/pBzVaq2T23yUtuZLK6Xm7NtP0vm3xGYGYrAYXGy795azapIczARGZONWaE5j8ZEVz8Xf3uUVXdbBJpBP93BdkSOeGdtLguMLvsu+F266bb6zcUc9mou8Eu/ee2vN+jW9mSaM7TFVH1+yXS83/3nXWD0kqhNPgPNjnuqhWHEoWOEre8YYxtQJIg6aRinn0ZgHUD76fcwjk+AqsVRNTecFEjD8yf9Zo4EvlPT8Dc+3wRcYZBnm70T4dIwI5tymgqT4Hw810hXMYCsEvUhqfhW2AfUnM0hYX+s5EGhMdQ/q0CQdxJy0NF32c3lJiWHJtIFUn33jzxd8aDktJb61gcaSC3C+Qf5VQCUSgJl7V2RI1XFzUyHwkb8zIemf0UaF8s2Ggi+US6Vo=
+        secure: E5KQERBzNNvBGsMU2ts2Xi6cvcCBHV5otcjpS8DKApLhnZ69w57hcOjfxDV8XJTyeyKXp2XxSaOXLHKfhgXtE1d0QZFe2AX2JG1TQvnhYAssE53hgExKST6G0R85WTctWjytYOidCfCi5mxPxlpn+N4R/GiYR9Z4GnLi5NWTm1smwmZIOQu/x8gIHmCpGeDIGutKqgqMzr94PXzs1xT3Q02HYWv55bfPLLMoHRo7t3KQBuQmVnMsQneS1phJBziamAgwiZ8PRBDithQlB6SCMaYPaHNp2FvS3+jWDe9pTDauF74X+4ZYiWEpeFAin2IuWtzCPxhoQtdXWHCjUMiN8DLayVqprLgZrC3StEZgwLB9SaJqqe2d1QB/XPJBx5UjXp5gDlpG0HFaFbzlNh3p3RXdbHq4Cu+czEcoPwYBi7yEKxQxvsyZ+WnsZFnscq86kexRlXQPOIMUWRH5i/kJLDSZm2+ByDzK8mT6j9lYCtkvppvIocQw9HKdqdpgpzwTmYLeHTh2XngCF7ToZemfkrPA2u6dkuAPgzwEhCpEkNXHdzN00nUIs0lhJfqSPbakRamydERyOCYl0nAWTrOwcI4qwRtTvBklUgEA/EQ6mJFdf0HqgYzMjlCiXqA1D1VsKrwRGI/O/5suljTqktFFbHUW37uNZybBwzL15eatOU0=
       skip_cleanup: true
       on:
         branch: master
