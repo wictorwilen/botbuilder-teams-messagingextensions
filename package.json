@@ -38,6 +38,7 @@
     "typescript": "^3.3.4000"
   },
   "dependencies": {
-    "botbuilder": "^4.3.4"
+    "botbuilder": "^4.3.4",
+    "ms-rest-js": "^1.0.1"
   }
 }
