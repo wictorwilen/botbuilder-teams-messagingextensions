@@ -2,7 +2,7 @@
 
 [![npm version](https://badge.fury.io/js/botbuilder-teams-messagingextensions.svg)](https://badge.fury.io/js/botbuilder-teams-messagingextensions)
 
-This middleware for [Bot Builder Framework](TODO: ) is targeted for [Microsoft Teams](https://docs.microsoft.com/en-us/microsoftteams/platform/) based bots.
+This middleware for [Bot Builder Framework](https://www.npmjs.com/package/botbuilder) is targeted for [Microsoft Teams](https://docs.microsoft.com/en-us/microsoftteams/platform/) based bots.
 
  | @master | @preview |
  :--------:|:---------:
