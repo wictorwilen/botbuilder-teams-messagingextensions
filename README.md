@@ -8,6 +8,17 @@ This middleware for [Bot Builder Framework](https://www.npmjs.com/package/botbui
  :--------:|:---------:
  [![Build Status](https://travis-ci.org/wictorwilen/botbuilder-teams-messagingextensions.svg?branch=master)](https://travis-ci.org/wictorwilen/botbuilder-teams-messagingextensions)|[![Build Status](https://travis-ci.org/wictorwilen/botbuilder-teams-messagingextensions.svg?branch=preview)](https://travis-ci.org/wictorwilen/botbuilder-teams-messagingextensions)
 
+## About
+
+The Microsoft Teams [Messaging Extension](https://docs.microsoft.com/en-us/microsoftteams/platform/concepts/messaging-extensions/messaging-extensions-overview?view=msteams-client-js-latest) Middleware for Microsoft Bot Builder makes building bots for Microsoft Teams easier. By separating out the logic for Message Extensions from the implementation of the bot, you will make your code more readable and easier to debug and troubleshoot.
+
+The middleware supports the following Message Extension features
+
+* [Message extension queries](https://docs.microsoft.com/en-us/microsoftteams/platform/concepts/messaging-extensions/search-extensions): `composeExtension/query`
+* [Message extension settings url](https://docs.microsoft.com/en-us/microsoftteams/platform/concepts/messaging-extensions/search-extensions#add-event-handlers): `composeExtension/querySettingUrl`
+* [Message extension settings](https://docs.microsoft.com/en-us/microsoftteams/platform/concepts/messaging-extensions/search-extensions#add-event-handlers): `composeExtension/setting`
+* [Message extension link unfurling](https://developer.microsoft.com/en-us/office/blogs/add-rich-previews-to-messages-using-link-unfurling/): `composeExtension/queryLink`
+* [Message extension message actions](https://docs.microsoft.com/en-us/microsoftteams/platform/concepts/messaging-extensions/create-extensions): `composeExtension/submitAction`
 
 ## Usage
 
