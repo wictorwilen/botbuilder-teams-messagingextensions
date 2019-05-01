@@ -69,7 +69,7 @@ export interface IMessagingExtensionMiddlewareProcessor {
      */
     onCardButtonClicked?(context: TurnContext, value: any): Promise<void>;
 
-     /**
+    /**
      * Handles when an item is selected from the result list
      *
      * Note: this is experimental and it does not filter on the commandId which means that if there are
@@ -78,7 +78,7 @@ export interface IMessagingExtensionMiddlewareProcessor {
      * @param context the turn context
      * @param value object passed in to invoke action
      */
-    onSelectItem?(context: TurnContext, value: any): Promise<void>;
+    onSelectItem?(context: TurnContext, value: any): Promise<MessagingExtensionResult>;
 }
 
 /**
@@ -288,19 +288,26 @@ export class MessagingExtensionMiddleware implements Middleware {
             case "composeExtension/selectItem":
                 if (this.processor.onSelectItem) {
                     try {
-                        await this.processor.onSelectItem(context, context.activity.value);
+                        const result = await this.processor.onSelectItem(context, context.activity.value);
                         context.sendActivity({
                             type: ActivityTypesEx.InvokeResponse,
                             value: {
+                                body: {
+                                    composeExtension: result,
+                                },
                                 status: 200,
                             },
                         });
+                        return;
+                        // we're doing a return here and not next() so we're not colliding with
+                        // any botbuilder-teams invoke things. This however will also invalidate the use
+                        // of multiple message extensions using selectItem - only the first one will be triggered
                     } catch (err) {
                         context.sendActivity({
                             type: ActivityTypesEx.InvokeResponse,
                             value: {
                                 body: err,
-                                status: 500,
+                                status: 200,
                             },
                         });
                     }

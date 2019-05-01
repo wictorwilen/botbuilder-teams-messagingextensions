@@ -21,12 +21,16 @@ The middleware supports the following Message Extension features
 * [Message extension message actions](https://docs.microsoft.com/en-us/microsoftteams/platform/concepts/messaging-extensions/create-extensions): `composeExtension/submitAction`
 * [Fetch task operations for message actions](https://docs.microsoft.com/en-us/microsoftteams/platform/concepts/messaging-extensions/create-extensions): `composeExtension/fetchTask`
 * Adaptive Card `Action.Submit` actions: `composeExtension/onCardButtonClicked`
+* [Message extension select](https://docs.microsoft.com/en-us/microsoftteams/platform/concepts/messaging-extensions/search-extensions): `composeExtension/selectItem`
 
 > NOTE: The `onCardButtonClicked` is experimental and lacks official documentation
 
 ## Usage
 
 To implement a Messaging Extension handler create a class like this:
+
+> NOTE: When combining this with the `botbuilder-teams` you should avoid using the  `invokeActivityHandler.onInvoke`, as it might
+> invalidate your messaging extension results.
 
 ``` TypeScript
 import { TurnContext, CardFactory } from "botbuilder";

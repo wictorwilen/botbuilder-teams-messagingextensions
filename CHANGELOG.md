@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 * Added support for action command responses (`onFetchTask` - `composeExtension/fetchTask`)
 * Added support for `Action.Submit` from adaptive cards (`onCardButtonClicked` - `composeExtension/onCardButtonClicked`)
+* Added support for select item in Message Extensions (`onSelectItem` - `composeExtension/selectItem`)
 
 ## [*1.1.0*] - <*2019-04-29*>
 
