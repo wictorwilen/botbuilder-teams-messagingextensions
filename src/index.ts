@@ -58,6 +58,16 @@ export interface IMessagingExtensionMiddlewareProcessor {
     onFetchTask?(context: TurnContext, value: {
         commandContext: any, context: any, messagePayload: any,
     }): Promise<ITaskInfo>;
+    /**
+     * Handles Action.Submit from adaptive cards
+     *
+     * Note: this is experimental and it does not filter on the commandId which means that if there are
+     * multiple registered message extension processors all will recieve this command. You should ensure to
+     * add a specific identifier to your adaptivecard.
+     * @param context the turn context
+     * @param value the card data
+     */
+    onCardButtonClicked?(context: TurnContext, value: any): Promise<void>;
 }
 
 /**
@@ -241,6 +251,27 @@ export class MessagingExtensionMiddleware implements Middleware {
                         });
                     }
                     return;
+                }
+                break;
+            case "composeExtension/onCardButtonClicked":
+                if (this.processor.onCardButtonClicked) {
+                    try {
+                        await this.processor.onCardButtonClicked(context, context.activity.value);
+                        context.sendActivity({
+                            type: ActivityTypesEx.InvokeResponse,
+                            value: {
+                                status: 200,
+                            },
+                        });
+                    } catch (err) {
+                        context.sendActivity({
+                            type: ActivityTypesEx.InvokeResponse,
+                            value: {
+                                body: err,
+                                status: 500,
+                            },
+                        });
+                    }
                 }
                 break;
             default:

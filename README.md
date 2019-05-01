@@ -20,6 +20,9 @@ The middleware supports the following Message Extension features
 * [Message extension link unfurling](https://developer.microsoft.com/en-us/office/blogs/add-rich-previews-to-messages-using-link-unfurling/): `composeExtension/queryLink`
 * [Message extension message actions](https://docs.microsoft.com/en-us/microsoftteams/platform/concepts/messaging-extensions/create-extensions): `composeExtension/submitAction`
 * [Fetch task operations for message actions](https://docs.microsoft.com/en-us/microsoftteams/platform/concepts/messaging-extensions/create-extensions): `composeExtension/fetchTask`
+* Adaptive Card `Action.Submit` actions: `composeExtension/onCardButtonClicked`
+
+> NOTE: The `onCardButtonClicked` is experimental and lacks official documentation
 
 ## Usage
 
