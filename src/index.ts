@@ -68,6 +68,17 @@ export interface IMessagingExtensionMiddlewareProcessor {
      * @param value the card data
      */
     onCardButtonClicked?(context: TurnContext, value: any): Promise<void>;
+
+     /**
+     * Handles when an item is selected from the result list
+     *
+     * Note: this is experimental and it does not filter on the commandId which means that if there are
+     * multiple registered message extension processors all will recieve this command. You should ensure to
+     * add a specific identifier to your invoke action.
+     * @param context the turn context
+     * @param value object passed in to invoke action
+     */
+    onSelectItem?(context: TurnContext, value: any): Promise<void>;
 }
 
 /**
@@ -257,6 +268,27 @@ export class MessagingExtensionMiddleware implements Middleware {
                 if (this.processor.onCardButtonClicked) {
                     try {
                         await this.processor.onCardButtonClicked(context, context.activity.value);
+                        context.sendActivity({
+                            type: ActivityTypesEx.InvokeResponse,
+                            value: {
+                                status: 200,
+                            },
+                        });
+                    } catch (err) {
+                        context.sendActivity({
+                            type: ActivityTypesEx.InvokeResponse,
+                            value: {
+                                body: err,
+                                status: 500,
+                            },
+                        });
+                    }
+                }
+                break;
+            case "composeExtension/selectItem":
+                if (this.processor.onSelectItem) {
+                    try {
+                        await this.processor.onSelectItem(context, context.activity.value);
                         context.sendActivity({
                             type: ActivityTypesEx.InvokeResponse,
                             value: {
