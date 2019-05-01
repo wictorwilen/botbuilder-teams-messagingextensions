@@ -36,6 +36,12 @@ export interface IMessagingExtensionMiddlewareProcessor {
      * @param value the value of the query
      */
     onSubmitAction?(context: TurnContext, value: MessagingExtensionQuery): Promise<MessagingExtensionResult>;
+      /**
+     * Processes incoming fetch task actions (composeExtension/fetchTask)
+     * @param context the turn context
+     * @param value commandContext
+     */
+    onFetchTask?(context: TurnContext, value: { commandContext: any, context: any }): Promise<any>;
 }
 
 /**
@@ -177,6 +183,30 @@ export class MessagingExtensionMiddleware implements Middleware {
                                 body: {
                                     composeExtension: result,
                                 },
+                                status: 200,
+                            },
+                        });
+                    } catch (err) {
+                        context.sendActivity({
+                            type: ActivityTypesEx.InvokeResponse,
+                            value: {
+                                body: err,
+                                status: 500,
+                            },
+                        });
+                    }
+                    return;
+                }
+                break;
+            case "composeExtension/fetchTask":
+                if ((this.commandId === context.activity.value.commandId || this.commandId === undefined) &&
+                    this.processor.onFetchTask) {
+                    try {
+                        const result = await this.processor.onFetchTask(context, context.activity.value);
+                        context.sendActivity({
+                            type: ActivityTypesEx.InvokeResponse,
+                            value: {
+                                body: result,
                                 status: 200,
                             },
                         });
