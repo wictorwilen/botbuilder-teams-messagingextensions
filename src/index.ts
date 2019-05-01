@@ -5,6 +5,20 @@ import { Middleware, TurnContext } from "botbuilder";
 import { ActivityTypesEx, MessagingExtensionQuery, MessagingExtensionResult } from "botbuilder-teams";
 
 /**
+ * TaskInfo response definition
+ * as defined in https://docs.microsoft.com/en-us/microsoftteams/platform/concepts/task-modules/task-modules-overview
+ */
+export interface ITaskInfo {
+    title: string;
+    height?: number | string;
+    width?: number | string;
+    url?: string;
+    card?: any;
+    fallbackUrl?: string;
+    completionBotId?: string;
+}
+
+/**
  * Defines the processor for the Messaging Extension Middleware
  */
 export interface IMessagingExtensionMiddlewareProcessor {
@@ -36,12 +50,14 @@ export interface IMessagingExtensionMiddlewareProcessor {
      * @param value the value of the query
      */
     onSubmitAction?(context: TurnContext, value: MessagingExtensionQuery): Promise<MessagingExtensionResult>;
-      /**
+    /**
      * Processes incoming fetch task actions (composeExtension/fetchTask)
      * @param context the turn context
      * @param value commandContext
      */
-    onFetchTask?(context: TurnContext, value: { commandContext: any, context: any }): Promise<any>;
+    onFetchTask?(context: TurnContext, value: {
+        commandContext: any, context: any, messagePayload: any,
+    }): Promise<ITaskInfo>;
 }
 
 /**
@@ -206,7 +222,12 @@ export class MessagingExtensionMiddleware implements Middleware {
                         context.sendActivity({
                             type: ActivityTypesEx.InvokeResponse,
                             value: {
-                                body: result,
+                                body: {
+                                    task: {
+                                        type: "continue",
+                                        value: result,
+                                    }
+                                },
                                 status: 200,
                             },
                         });

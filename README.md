@@ -19,6 +19,7 @@ The middleware supports the following Message Extension features
 * [Message extension settings](https://docs.microsoft.com/en-us/microsoftteams/platform/concepts/messaging-extensions/search-extensions#add-event-handlers): `composeExtension/setting`
 * [Message extension link unfurling](https://developer.microsoft.com/en-us/office/blogs/add-rich-previews-to-messages-using-link-unfurling/): `composeExtension/queryLink`
 * [Message extension message actions](https://docs.microsoft.com/en-us/microsoftteams/platform/concepts/messaging-extensions/create-extensions): `composeExtension/submitAction`
+* [Fetch task operations for message actions](https://docs.microsoft.com/en-us/microsoftteams/platform/concepts/messaging-extensions/create-extensions): `composeExtension/fetchTask`
 
 ## Usage
 
@@ -91,6 +92,69 @@ Where you should match the command id with the one in the Teams manifest file:
     }]
 }],
 ```
+
+### Use message actions and task modules
+
+To create an message action that shows a task module for your input define your message extension as follows in the manifest. The `fetchTask` property set to `true` indicates that we want to use a task module.
+
+``` JSON
+{
+    "id": "createToDoMessageExtension",
+    "title": "Create To-Do",
+    "description": "Create a To-Do item",
+    "context": ["message", "commandBox", "compose"], 
+    "fetchTask": true,
+    "type": "action"
+}
+```
+
+In the processor you need to implement the `onFetchTask` and `onSubmitAction` methods. You can either return a card using the `card` property or 
+use the `url` parameter to point to a web page.
+
+``` TypeScript
+public async onFetchTask(context: TurnContext, value: { commandContext: any, context: any, messagePayload: any }): Promise<ITaskInfo> {
+    return Promise.resolve({
+        title: "Task Module",
+        card: CardFactory.adaptiveCard({
+            $schema: "http://adaptivecards.io/schemas/adaptive-card.json",
+            type: "AdaptiveCard",
+            version: "1.0",
+            body: [
+                {
+                    type: "TextBlock",
+                    text: "Please enter your e-mail"
+                },
+                {
+                    type: "Input.Text",
+                    id: "myEmail",
+                    placeholder: "youremail@example.com",
+                    style: "email"
+                },
+            ],
+            actions: [
+                {
+                    type: "Action.Submit",
+                    title: "OK",
+                    data: { id: "unique-id" }
+                }
+            ]
+        })
+    });
+}
+
+// handle response in here
+public async onSubmitAction(context: TurnContext, value: MessagingExtensionQuery): Promise<MessagingExtensionResult> {
+   const email = value.data.myEmail;
+   const id - value.data.id;
+   ...
+}
+```
+
+
+## Contributors
+
+* [Wictor Wilén](https://github.com/wictorwilen) - Original author and coordinator
+* [Thomas White](https://github.com/tdwhite0)
 
 ## License
 
