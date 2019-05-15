@@ -19,6 +19,18 @@ export interface ITaskInfo {
 }
 
 /**
+ * The `value` property of the `composeExtension/submitAction` request
+ */
+export interface ISubmitActionRequest {
+    commandId: string;
+    commandText: string;
+    context: {
+        theme: string;
+    };
+    data: any;
+}
+
+/**
  * Defines the processor for the Messaging Extension Middleware
  */
 export interface IMessagingExtensionMiddlewareProcessor {
@@ -49,7 +61,7 @@ export interface IMessagingExtensionMiddlewareProcessor {
      * @param context the turn context
      * @param value the value of the query
      */
-    onSubmitAction?(context: TurnContext, value: MessagingExtensionQuery): Promise<MessagingExtensionResult>;
+    onSubmitAction?(context: TurnContext, value: ISubmitActionRequest): Promise<MessagingExtensionResult>;
     /**
      * Processes incoming fetch task actions (composeExtension/fetchTask)
      * @param context the turn context
@@ -247,7 +259,7 @@ export class MessagingExtensionMiddleware implements Middleware {
                                     task: {
                                         type: "continue",
                                         value: result,
-                                    }
+                                    },
                                 },
                                 status: 200,
                             },
