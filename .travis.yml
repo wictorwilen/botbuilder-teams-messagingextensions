@@ -26,7 +26,6 @@ jobs:
       tag: preview
       on:
         branch: preview
-        tags: true
     - provider: npm
       email: wictor@wictorwilen.se
       api_key:
@@ -34,5 +33,4 @@ jobs:
       skip_cleanup: true
       on:
         branch: master
-        tags: true
 
