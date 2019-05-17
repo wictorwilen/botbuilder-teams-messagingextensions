@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 
 * Changed signature for `onSubmitAction` to use new `ISubmitActionRequest` interface
+* Changed signature for `onFetchTask` to return `MessagingExtensionResult` (for `auth` and `config`) or `ITaskModuleResult` (when using `continue` or `message`)
 
 ## [*1.2.1*] - <*2019-05-07*>
 

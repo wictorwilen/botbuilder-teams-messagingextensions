@@ -119,40 +119,43 @@ In the processor you need to implement the `onFetchTask` and `onSubmitAction` me
 use the `url` parameter to point to a web page.
 
 ``` TypeScript
-public async onFetchTask(context: TurnContext, value: { commandContext: any, context: any, messagePayload: any }): Promise<ITaskInfo> {
-    return Promise.resolve({
-        title: "Task Module",
-        card: CardFactory.adaptiveCard({
-            $schema: "http://adaptivecards.io/schemas/adaptive-card.json",
-            type: "AdaptiveCard",
-            version: "1.0",
-            body: [
-                {
-                    type: "TextBlock",
-                    text: "Please enter your e-mail"
-                },
-                {
-                    type: "Input.Text",
-                    id: "myEmail",
-                    placeholder: "youremail@example.com",
-                    style: "email"
-                },
-            ],
-            actions: [
-                {
-                    type: "Action.Submit",
-                    title: "OK",
-                    data: { id: "unique-id" }
-                }
-            ]
-        })
+public async onFetchTask(context: TurnContext, value: { commandContext: any, context: any, messagePayload: any }): Promise<MessagingExtensionResult | ITaskModuleResult> {
+    return Promise.resolve<ITaskModuleResult>({
+        type: "continue",
+            value: {
+            title: "Task Module",
+            card: CardFactory.adaptiveCard({
+                $schema: "http://adaptivecards.io/schemas/adaptive-card.json",
+                type: "AdaptiveCard",
+                version: "1.0",
+                body: [
+                    {
+                        type: "TextBlock",
+                        text: "Please enter your e-mail"
+                    },
+                    {
+                        type: "Input.Text",
+                        id: "myEmail",
+                        placeholder: "youremail@example.com",
+                        style: "email"
+                    },
+                ],
+                actions: [
+                    {
+                        type: "Action.Submit",
+                        title: "OK",
+                        data: { id: "unique-id" }
+                    }
+                ]
+            })
+        }
     });
 }
 
 // handle response in here
-public async onSubmitAction(context: TurnContext, value: MessagingExtensionQuery): Promise<MessagingExtensionResult> {
+public async onSubmitAction(context: TurnContext, value: ISubmitActionRequest): Promise<MessagingExtensionResult> {
    const email = value.data.myEmail;
-   const id - value.data.id;
+   const id = value.data.id;
    ...
 }
 ```

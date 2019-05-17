@@ -5,17 +5,26 @@ import { Middleware, TurnContext } from "botbuilder";
 import { ActivityTypesEx, MessagingExtensionQuery, MessagingExtensionResult } from "botbuilder-teams";
 
 /**
- * TaskInfo response definition
- * as defined in https://docs.microsoft.com/en-us/microsoftteams/platform/concepts/task-modules/task-modules-overview
+ * see https://raw.githubusercontent.com/OfficeDev/BotBuilder-MicrosoftTeams-node/
+ * 2b1a9de550b7d724e38cbfad4ea96de7c4966900/botbuilder-teams-js/swagger/teamsAPI.json
  */
-export interface ITaskInfo {
+export interface ITaskModuleTaskInfo {
     title: string;
-    height?: number | string;
-    width?: number | string;
+    height?: number | string | "small" | "medium" | "large";
+    width?: number | string | "small" | "medium" | "large";
     url?: string;
     card?: any;
     fallbackUrl?: string;
     completionBotId?: string;
+}
+
+/**
+ * see https://raw.githubusercontent.com/OfficeDev/BotBuilder-MicrosoftTeams-node/
+ * 2b1a9de550b7d724e38cbfad4ea96de7c4966900/botbuilder-teams-js/swagger/teamsAPI.json
+ */
+export interface ITaskModuleResult {
+    type: "message" | "continue";
+    value: ITaskModuleTaskInfo;
 }
 
 /**
@@ -69,7 +78,7 @@ export interface IMessagingExtensionMiddlewareProcessor {
      */
     onFetchTask?(context: TurnContext, value: {
         commandContext: any, context: any, messagePayload: any,
-    }): Promise<ITaskInfo>;
+    }): Promise<MessagingExtensionResult | ITaskModuleResult>;
     /**
      * Handles Action.Submit from adaptive cards
      *
@@ -252,15 +261,13 @@ export class MessagingExtensionMiddleware implements Middleware {
                     this.processor.onFetchTask) {
                     try {
                         const result = await this.processor.onFetchTask(context, context.activity.value);
+                        const body = result.type === "continue" || result.type === "message" ?
+                            { task: result } :
+                            { composeExtension: result };
                         context.sendActivity({
                             type: ActivityTypesEx.InvokeResponse,
                             value: {
-                                body: {
-                                    task: {
-                                        type: "continue",
-                                        value: result,
-                                    },
-                                },
+                                body,
                                 status: 200,
                             },
                         });
