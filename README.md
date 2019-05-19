@@ -119,7 +119,7 @@ In the processor you need to implement the `onFetchTask` and `onSubmitAction` me
 use the `url` parameter to point to a web page.
 
 ``` TypeScript
-public async onFetchTask(context: TurnContext, value: { commandContext: any, context: any, messagePayload: any }): Promise<MessagingExtensionResult | ITaskModuleResult> {
+public async onFetchTask(context: TurnContext, value: IMessagingExtensionActionRequest): Promise<MessagingExtensionResult | ITaskModuleResult> {
     return Promise.resolve<ITaskModuleResult>({
         type: "continue",
             value: {
@@ -153,7 +153,7 @@ public async onFetchTask(context: TurnContext, value: { commandContext: any, con
 }
 
 // handle response in here
-public async onSubmitAction(context: TurnContext, value: ISubmitActionRequest): Promise<MessagingExtensionResult> {
+public async onSubmitAction(context: TurnContext, value: IMessagingExtensionActionRequest): Promise<MessagingExtensionResult> {
    const email = value.data.myEmail;
    const id = value.data.id;
    ...

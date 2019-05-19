@@ -28,16 +28,28 @@ export interface ITaskModuleResult {
 }
 
 /**
- * The `value` property of the `composeExtension/submitAction` request
+ * see https://raw.githubusercontent.com/OfficeDev/BotBuilder-MicrosoftTeams-node/
+ * 2b1a9de550b7d724e38cbfad4ea96de7c4966900/botbuilder-teams-js/swagger/teamsAPI.json
  */
-export interface ISubmitActionRequest {
+export interface IMessagingExtensionActionRequest {
     commandId: string;
-    commandText: string;
+    commandContext: "" | "message" | "compose" | "commandBox";
     context: {
         theme: string;
     };
-    data: any;
+    /**
+     * `data` is sent back from an adaptive card, task module or static properties 
+     */
+    data?: any;
+    /**
+     * `state` is sent back from a config/auth request
+     */
+    state?: any;
+    messagePayload?: any;
+    botMessagePreviewAction?: "edit" | "send";
 }
+
+// tslint:disable: max-line-length
 
 /**
  * Defines the processor for the Messaging Extension Middleware
@@ -47,38 +59,42 @@ export interface IMessagingExtensionMiddlewareProcessor {
      * Processes incoming queries (composeExtension/query)
      * @param context the turn context
      * @param value the value of the query
+     * @returns {Promise<MessagingExtensionResult}
      */
     onQuery?(context: TurnContext, value: MessagingExtensionQuery): Promise<MessagingExtensionResult>;
     /**
      * Process incoming requests for Messaging Extension settings (composeExtension/querySettingUrl)
      * @param context the turn context
+     * @returns {Promise<{ title: string, value: string }}
      */
     onQuerySettingsUrl?(context: TurnContext): Promise<{ title: string, value: string }>;
     /**
      * Processes incoming setting updates (composeExtension/setting)
      * @param context the turn context
+     * @returns {Promise<void>}
      */
     onSettings?(context: TurnContext): Promise<void>;
     /**
      * Processes incoming link queries (composeExtension/queryLink)
      * @param context the turn context
      * @param value the value of the query
+     * @returns {Promise<MessagingExtensionResult}
      */
     onQueryLink?(context: TurnContext, value: MessagingExtensionQuery): Promise<MessagingExtensionResult>;
     /**
      * Processes incoming link actions (composeExtension/submitAction)
      * @param context the turn context
      * @param value the value of the query
+     * @returns {Promise<MessagingExtensionResult}
      */
-    onSubmitAction?(context: TurnContext, value: ISubmitActionRequest): Promise<MessagingExtensionResult>;
+    onSubmitAction?(context: TurnContext, value: IMessagingExtensionActionRequest): Promise<MessagingExtensionResult>;
     /**
-     * Processes incoming fetch task actions (composeExtension/fetchTask)
+     * Processes incoming fetch task actions (`composeExtension/fetchTask`)
      * @param context the turn context
      * @param value commandContext
+     * @returns {Promise<MessagingExtensionResult | ITaskModuleResult>} Promise object is either a `MessagingExtensionResult` for `conf` or `auth` or a `ITaskModuleResult` for `message` or `continue`
      */
-    onFetchTask?(context: TurnContext, value: {
-        commandContext: any, context: any, messagePayload: any,
-    }): Promise<MessagingExtensionResult | ITaskModuleResult>;
+    onFetchTask?(context: TurnContext, value: IMessagingExtensionActionRequest): Promise<MessagingExtensionResult | ITaskModuleResult>;
     /**
      * Handles Action.Submit from adaptive cards
      *
@@ -87,6 +103,7 @@ export interface IMessagingExtensionMiddlewareProcessor {
      * add a specific identifier to your adaptivecard.
      * @param context the turn context
      * @param value the card data
+     * @returns {Promise<void>}
      */
     onCardButtonClicked?(context: TurnContext, value: any): Promise<void>;
 
@@ -98,6 +115,7 @@ export interface IMessagingExtensionMiddlewareProcessor {
      * add a specific identifier to your invoke action.
      * @param context the turn context
      * @param value object passed in to invoke action
+     * @returns {Promise<MessagingExtensionResult>}
      */
     onSelectItem?(context: TurnContext, value: any): Promise<MessagingExtensionResult>;
 }
@@ -118,7 +136,11 @@ export class MessagingExtensionMiddleware implements Middleware {
         private processor: IMessagingExtensionMiddlewareProcessor) {
 
     }
-
+    /**
+     * Bot Framework `onTurn` method
+     * @param context the turn context
+     * @param next the next function
+     */
     public async onTurn(context: TurnContext, next: () => Promise<void>): Promise<void> {
         switch (context.activity.name) {
             case "composeExtension/query":
