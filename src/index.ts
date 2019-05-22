@@ -38,7 +38,7 @@ export interface IMessagingExtensionActionRequest {
         theme: string;
     };
     /**
-     * `data` is sent back from an adaptive card, task module or static properties 
+     * `data` is sent back from an adaptive card, task module or static properties
      */
     data?: any;
     /**
