@@ -36,11 +36,11 @@
   "homepage": "https://github.com/wictorwilen/botbuilder-teams-messagingextensions",
   "license": "MIT",
   "devDependencies": {
-    "botbuilder-teams": "^4.0.0-beta1",
     "tslint": "^5.14.0",
     "typescript": "^3.3.4000"
   },
   "dependencies": {
+    "botbuilder-teams": "^4.0.0-beta1",
     "botbuilder": "4.4.0",
     "ms-rest-js": "1.0.1"
   }
