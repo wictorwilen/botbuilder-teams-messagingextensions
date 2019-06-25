@@ -53,6 +53,14 @@ export interface IMessagingExtensionActionRequest {
     botMessagePreviewAction?: "edit" | "send";
 }
 
+/**
+ * see https://raw.githubusercontent.com/OfficeDev/BotBuilder-MicrosoftTeams-node/
+ * 2b1a9de550b7d724e38cbfad4ea96de7c4966900/botbuilder-teams-js/swagger/teamsAPI.json
+ */
+export interface IAppBasedLinkQuery {
+    url: string;
+}
+
 // tslint:disable: max-line-length
 
 /**
@@ -84,7 +92,7 @@ export interface IMessagingExtensionMiddlewareProcessor {
      * @param value the value of the query
      * @returns {Promise<MessagingExtensionResult>}
      */
-    onQueryLink?(context: TurnContext, value: MessagingExtensionQuery): Promise<MessagingExtensionResult>;
+    onQueryLink?(context: TurnContext, value: IAppBasedLinkQuery): Promise<MessagingExtensionResult>;
     /**
      * Processes incoming link actions (composeExtension/submitAction)
      * @param context the turn context
@@ -246,8 +254,7 @@ export class MessagingExtensionMiddleware implements Middleware {
                 }
                 break;
             case "composeExtension/queryLink":
-                if ((this.commandId === context.activity.value.commandId || this.commandId === undefined) &&
-                    this.processor.onQueryLink) {
+                if (this.processor.onQueryLink) {
                     try {
                         const result = await this.processor.onQueryLink(context, context.activity.value);
                         context.sendActivity({
@@ -269,6 +276,9 @@ export class MessagingExtensionMiddleware implements Middleware {
                         });
                     }
                     return;
+                    // we're doing a return here and not next() so we're not colliding with
+                    // any botbuilder-teams invoke things. This however will also invalidate the use
+                    // of multiple message extensions using queryLink - only the first one will be triggered
                 }
                 break;
             case "composeExtension/submitAction":
