@@ -1,12 +1,12 @@
 // Copyright (c) Wictor Wilén. All rights reserved.
 // Licensed under the MIT license.
 
-import { debug } from "debug";
 import { Middleware, TurnContext } from "botbuilder";
 import { ActivityTypesEx, MessagingExtensionQuery, MessagingExtensionResult } from "botbuilder-teams";
+import { debug } from "debug";
 
 // Initialize debug logging module
-var log = debug("msteams");
+const log = debug("msteams");
 
 /**
  * see https://raw.githubusercontent.com/OfficeDev/BotBuilder-MicrosoftTeams-node/
@@ -148,7 +148,7 @@ export class MessagingExtensionMiddleware implements Middleware {
         private processor: IMessagingExtensionMiddlewareProcessor) {
 
     }
-    
+
     /**
      * Bot Framework `onTurn` method
      * @param context the turn context
@@ -162,7 +162,7 @@ export class MessagingExtensionMiddleware implements Middleware {
         } else {
             log(`  activity.value: ${JSON.stringify(context.activity.value)}`);
         }
-        if ((this.commandId !== undefined) && 
+        if ((this.commandId !== undefined) &&
             (context.activity.value.commandId.toLowerCase() !== this.processor.constructor.name.toLowerCase())) {
             // command id from manifest.json not bound to a middleware handler
             log(`ERROR: the command id defined in manifest.json [${context.activity.value.commandId}] does not match the middleware handler [${this.processor.constructor.name}] and will not be handled.`);
