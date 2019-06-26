@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [*Unreleased*]
+
+### Added
+
+* Added logging (`msteams` namespace)
+
+### Changed
+
+* Updated `botbuilder-teams` to `4.3.0-beta1` 
+
 ## [*1.4.0*]- <*2019-06-02*>
 
 ### Changed
@@ -12,7 +22,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 * `onQueryLink` is no longer filtering on `commandId` (as that is not sent in the `composeExtension/onQueryLink`)
 * Changed signature for `onQueryLink` to use `IAppBasedLinkQuery` as value, to match official swagger 
 * Updated devDependencies
-
 
 ## [*1.3.0*] - <*2019-05-22*>
 
