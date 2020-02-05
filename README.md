@@ -165,6 +165,7 @@ public async onSubmitAction(context: TurnContext, value: IMessagingExtensionActi
 
 * [Wictor Wilén](https://github.com/wictorwilen) - Original author and coordinator
 * [Thomas White](https://github.com/tdwhite0)
+* [Bill Bliss](https://github.com/billbliss)
 
 ## License
 

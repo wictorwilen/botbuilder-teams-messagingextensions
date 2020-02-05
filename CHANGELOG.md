@@ -13,14 +13,22 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 
-* Updated `botbuilder-teams` to `4.3.0-beta1` 
+* Migrated to `botbuilder-core@4.7.1`
+* Breaking changes in the `IMessagingExtensionMiddlewareProcessor` where
+types from `botbuilder-core` is used instead of custom defintions
+* Updated Travis build settings
+
+### Removed
+
+* Removed `botbuilder-teams`
+* Removed all custom interface declarations
 
 ## [*1.4.0*]- <*2019-06-02*>
 
 ### Changed
 
 * `onQueryLink` is no longer filtering on `commandId` (as that is not sent in the `composeExtension/onQueryLink`)
-* Changed signature for `onQueryLink` to use `IAppBasedLinkQuery` as value, to match official swagger 
+* Changed signature for `onQueryLink` to use `IAppBasedLinkQuery` as value, to match official swagger
 * Updated devDependencies
 
 ## [*1.3.0*] - <*2019-05-22*>
