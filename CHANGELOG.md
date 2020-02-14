@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 * Added logging (`msteams` namespace)
 
+### Fixed
+
+* Fixed the `type` of the response to `invokeResponse`
+
 ### Changed
 
 * Migrated to `botbuilder-core@4.7.1`

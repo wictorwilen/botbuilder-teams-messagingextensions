@@ -86,6 +86,8 @@ export interface IMessagingExtensionMiddlewareProcessor {
     onSelectItem?(context: TurnContext, value: any): Promise<MessagingExtensionResult>;
 }
 
+const INVOKERESPONSE = "invokeResponse";
+
 /**
  * A Messaging Extension Middleware for Microsoft Teams
  */
@@ -109,232 +111,234 @@ export class MessagingExtensionMiddleware implements Middleware {
      * @param next the next function
      */
     public async onTurn(context: TurnContext, next: () => Promise<void>): Promise<void> {
-        log(`Activity received - activity.name: ${context.activity.name}`);
-        if (this.commandId !== undefined) {
-            log(`  commandId: ${context.activity.value.commandId}`);
-            log(`  parameters: ${JSON.stringify(context.activity.value.parameters)}`);
-        } else {
-            log(`  activity.value: ${JSON.stringify(context.activity.value)}`);
-        }
+        if (context.activity !== undefined && context.activity.name !== undefined) {
+            log(`Activity received - activity.name: ${context.activity.name}`);
+            if (this.commandId !== undefined) {
+                log(`  commandId: ${context.activity.value.commandId}`);
+                log(`  parameters: ${JSON.stringify(context.activity.value.parameters)}`);
+            } else {
+                log(`  activity.value: ${JSON.stringify(context.activity.value)}`);
+            }
 
-        switch (context.activity.name) {
-            case "composeExtension/query":
-                if ((this.commandId === context.activity.value.commandId || this.commandId === undefined) &&
-                    this.processor.onQuery) {
-                    try {
-                        const result = await this.processor.onQuery(context, context.activity.value);
-                        context.sendActivity({
-                            type: ActivityTypes.Invoke,
-                            value: {
-                                body: {
-                                    composeExtension: result,
-                                },
-                                status: 200,
-                            },
-                        });
-                    } catch (err) {
-                        context.sendActivity({
-                            type: ActivityTypes.Invoke,
-                            value: {
-                                body: err,
-                                status: 500,
-                            },
-                        });
-                    }
-                    return;
-                }
-                break;
-            case "composeExtension/querySettingUrl":
-                if ((this.commandId === context.activity.value.commandId || this.commandId === undefined) &&
-                    this.processor.onQuerySettingsUrl) {
-                    try {
-                        const result = await this.processor.onQuerySettingsUrl(context);
-                        context.sendActivity({
-                            type: ActivityTypes.Invoke,
-                            value: {
-                                body: {
-                                    composeExtension: {
-                                        suggestedActions: {
-                                            actions: [{
-                                                type: "openApp",
-                                                ...result,
-                                            }],
-                                        },
-                                        type: "config",
+            switch (context.activity.name) {
+                case "composeExtension/query":
+                    if ((this.commandId === context.activity.value.commandId || this.commandId === undefined) &&
+                        this.processor.onQuery) {
+                        try {
+                            const result = await this.processor.onQuery(context, context.activity.value);
+                            context.sendActivity({
+                                type: INVOKERESPONSE,
+                                value: {
+                                    body: {
+                                        composeExtension: result,
                                     },
+                                    status: 200,
                                 },
-                                status: 200,
-                            },
-                        });
-                    } catch (err) {
-                        context.sendActivity({
-                            type: ActivityTypes.Invoke,
-                            value: {
-                                body: err,
-                                status: 500,
-                            },
-                        });
-                    }
-                    return;
-                }
-                break;
-            case "composeExtension/setting":
-                if ((this.commandId === context.activity.value.commandId || this.commandId === undefined) &&
-                    this.processor.onSettings) {
-                    try {
-                        await this.processor.onSettings(context);
-                        context.sendActivity({
-                            type: ActivityTypes.Invoke,
-                            value: {
-                                status: 200,
-                            },
-                        });
-                    } catch (err) {
-                        context.sendActivity({
-                            type: ActivityTypes.Invoke,
-                            value: {
-                                body: err,
-                                status: 500,
-                            },
-                        });
-                    }
-                    return;
-                }
-                break;
-            case "composeExtension/queryLink":
-                if (this.processor.onQueryLink) {
-                    try {
-                        const result = await this.processor.onQueryLink(context, context.activity.value);
-                        context.sendActivity({
-                            type: ActivityTypes.Invoke,
-                            value: {
-                                body: {
-                                    composeExtension: result,
+                            });
+                        } catch (err) {
+                            context.sendActivity({
+                                type: INVOKERESPONSE,
+                                value: {
+                                    body: err,
+                                    status: 500,
                                 },
-                                status: 200,
-                            },
-                        });
-                    } catch (err) {
-                        context.sendActivity({
-                            type: ActivityTypes.Invoke,
-                            value: {
-                                body: err,
-                                status: 500,
-                            },
-                        });
+                            });
+                        }
+                        return;
                     }
-                    return;
-                    // we're doing a return here and not next() so we're not colliding with
-                    // any botbuilder-teams invoke things. This however will also invalidate the use
-                    // of multiple message extensions using queryLink - only the first one will be triggered
-                }
-                break;
-            case "composeExtension/submitAction":
-                if ((this.commandId === context.activity.value.commandId || this.commandId === undefined) &&
-                    this.processor.onSubmitAction) {
-                    try {
-                        const result = await this.processor.onSubmitAction(context, context.activity.value);
-                        context.sendActivity({
-                            type: ActivityTypes.Invoke,
-                            value: {
-                                body: {
-                                    composeExtension: result,
+                    break;
+                case "composeExtension/querySettingUrl":
+                    if ((this.commandId === context.activity.value.commandId || this.commandId === undefined) &&
+                        this.processor.onQuerySettingsUrl) {
+                        try {
+                            const result = await this.processor.onQuerySettingsUrl(context);
+                            context.sendActivity({
+                                type: INVOKERESPONSE,
+                                value: {
+                                    body: {
+                                        composeExtension: {
+                                            suggestedActions: {
+                                                actions: [{
+                                                    type: "openApp",
+                                                    ...result,
+                                                }],
+                                            },
+                                            type: "config",
+                                        },
+                                    },
+                                    status: 200,
                                 },
-                                status: 200,
-                            },
-                        });
-                    } catch (err) {
-                        context.sendActivity({
-                            type: ActivityTypes.Invoke,
-                            value: {
-                                body: err,
-                                status: 500,
-                            },
-                        });
-                    }
-                    return;
-                }
-                break;
-            case "composeExtension/fetchTask":
-            case "task/fetch": // for some reason Teams sends this instead of the composeExtension/fetchTask after a config/auth flow
-                if ((this.commandId === context.activity.value.commandId || this.commandId === undefined) &&
-                    this.processor.onFetchTask) {
-                    try {
-                        const result = await this.processor.onFetchTask(context, context.activity.value);
-                        const body = result.type === "continue" || result.type === "message" ?
-                            { task: result } :
-                            { composeExtension: result };
-                        context.sendActivity({
-                            type: ActivityTypes.Invoke,
-                            value: {
-                                body,
-                                status: 200,
-                            },
-                        });
-                    } catch (err) {
-                        context.sendActivity({
-                            type: ActivityTypes.Invoke,
-                            value: {
-                                body: err,
-                                status: 500,
-                            },
-                        });
-                    }
-                    return;
-                }
-                break;
-            case "composeExtension/onCardButtonClicked":
-                if (this.processor.onCardButtonClicked) {
-                    try {
-                        await this.processor.onCardButtonClicked(context, context.activity.value);
-                        context.sendActivity({
-                            type: ActivityTypes.Invoke,
-                            value: {
-                                status: 200,
-                            },
-                        });
-                    } catch (err) {
-                        context.sendActivity({
-                            type: ActivityTypes.Invoke,
-                            value: {
-                                body: err,
-                                status: 500,
-                            },
-                        });
-                    }
-                }
-                break;
-            case "composeExtension/selectItem":
-                if (this.processor.onSelectItem) {
-                    try {
-                        const result = await this.processor.onSelectItem(context, context.activity.value);
-                        context.sendActivity({
-                            type: ActivityTypes.Invoke,
-                            value: {
-                                body: {
-                                    composeExtension: result,
+                            });
+                        } catch (err) {
+                            context.sendActivity({
+                                type: INVOKERESPONSE,
+                                value: {
+                                    body: err,
+                                    status: 500,
                                 },
-                                status: 200,
-                            },
-                        });
+                            });
+                        }
+                        return;
+                    }
+                    break;
+                case "composeExtension/setting":
+                    if ((this.commandId === context.activity.value.commandId || this.commandId === undefined) &&
+                        this.processor.onSettings) {
+                        try {
+                            await this.processor.onSettings(context);
+                            context.sendActivity({
+                                type: INVOKERESPONSE,
+                                value: {
+                                    status: 200,
+                                },
+                            });
+                        } catch (err) {
+                            context.sendActivity({
+                                type: INVOKERESPONSE,
+                                value: {
+                                    body: err,
+                                    status: 500,
+                                },
+                            });
+                        }
+                        return;
+                    }
+                    break;
+                case "composeExtension/queryLink":
+                    if (this.processor.onQueryLink) {
+                        try {
+                            const result = await this.processor.onQueryLink(context, context.activity.value);
+                            context.sendActivity({
+                                type: INVOKERESPONSE,
+                                value: {
+                                    body: {
+                                        composeExtension: result,
+                                    },
+                                    status: 200,
+                                },
+                            });
+                        } catch (err) {
+                            context.sendActivity({
+                                type: INVOKERESPONSE,
+                                value: {
+                                    body: err,
+                                    status: 500,
+                                },
+                            });
+                        }
                         return;
                         // we're doing a return here and not next() so we're not colliding with
                         // any botbuilder-teams invoke things. This however will also invalidate the use
-                        // of multiple message extensions using selectItem - only the first one will be triggered
-                    } catch (err) {
-                        context.sendActivity({
-                            type: ActivityTypes.Invoke,
-                            value: {
-                                body: err,
-                                status: 200,
-                            },
-                        });
+                        // of multiple message extensions using queryLink - only the first one will be triggered
                     }
-                }
-                break;
-            default:
-                // nop
-                break;
+                    break;
+                case "composeExtension/submitAction":
+                    if ((this.commandId === context.activity.value.commandId || this.commandId === undefined) &&
+                        this.processor.onSubmitAction) {
+                        try {
+                            const result = await this.processor.onSubmitAction(context, context.activity.value);
+                            context.sendActivity({
+                                type: INVOKERESPONSE,
+                                value: {
+                                    body: {
+                                        composeExtension: result,
+                                    },
+                                    status: 200,
+                                },
+                            });
+                        } catch (err) {
+                            context.sendActivity({
+                                type: INVOKERESPONSE,
+                                value: {
+                                    body: err,
+                                    status: 500,
+                                },
+                            });
+                        }
+                        return;
+                    }
+                    break;
+                case "composeExtension/fetchTask":
+                case "task/fetch": // for some reason Teams sends this instead of the composeExtension/fetchTask after a config/auth flow
+                    if ((this.commandId === context.activity.value.commandId || this.commandId === undefined) &&
+                        this.processor.onFetchTask) {
+                        try {
+                            const result = await this.processor.onFetchTask(context, context.activity.value);
+                            const body = result.type === "continue" || result.type === "message" ?
+                                { task: result } :
+                                { composeExtension: result };
+                            context.sendActivity({
+                                type: INVOKERESPONSE,
+                                value: {
+                                    body,
+                                    status: 200,
+                                },
+                            });
+                        } catch (err) {
+                            context.sendActivity({
+                                type: INVOKERESPONSE,
+                                value: {
+                                    body: err,
+                                    status: 500,
+                                },
+                            });
+                        }
+                        return;
+                    }
+                    break;
+                case "composeExtension/onCardButtonClicked":
+                    if (this.processor.onCardButtonClicked) {
+                        try {
+                            await this.processor.onCardButtonClicked(context, context.activity.value);
+                            context.sendActivity({
+                                type: INVOKERESPONSE,
+                                value: {
+                                    status: 200,
+                                },
+                            });
+                        } catch (err) {
+                            context.sendActivity({
+                                type: INVOKERESPONSE,
+                                value: {
+                                    body: err,
+                                    status: 500,
+                                },
+                            });
+                        }
+                    }
+                    break;
+                case "composeExtension/selectItem":
+                    if (this.processor.onSelectItem) {
+                        try {
+                            const result = await this.processor.onSelectItem(context, context.activity.value);
+                            context.sendActivity({
+                                type: INVOKERESPONSE,
+                                value: {
+                                    body: {
+                                        composeExtension: result,
+                                    },
+                                    status: 200,
+                                },
+                            });
+                            return;
+                            // we're doing a return here and not next() so we're not colliding with
+                            // any botbuilder-teams invoke things. This however will also invalidate the use
+                            // of multiple message extensions using selectItem - only the first one will be triggered
+                        } catch (err) {
+                            context.sendActivity({
+                                type: INVOKERESPONSE,
+                                value: {
+                                    body: err,
+                                    status: 200,
+                                },
+                            });
+                        }
+                    }
+                    break;
+                default:
+                    // nop
+                    break;
+            }
         }
         return next();
     }
