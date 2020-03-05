@@ -1,4 +1,4 @@
-# Microsoft Teams Messaging Extension Middleware for Microsoft Bot Builder 
+# Microsoft Teams Messaging Extension Middleware for Microsoft Bot Builder
 
 [![npm version](https://badge.fury.io/js/botbuilder-teams-messagingextensions.svg)](https://badge.fury.io/js/botbuilder-teams-messagingextensions)
 
@@ -23,8 +23,6 @@ The middleware supports the following Message Extension features
 * Adaptive Card `Action.Submit` actions: `composeExtension/onCardButtonClicked`
 * [Message extension select](https://docs.microsoft.com/en-us/microsoftteams/platform/concepts/messaging-extensions/search-extensions): `composeExtension/selectItem`
 
-> NOTE: The `onCardButtonClicked` is experimental and lacks official documentation
-
 ## Usage
 
 To implement a Messaging Extension handler create a class like this:
@@ -33,8 +31,7 @@ To implement a Messaging Extension handler create a class like this:
 > invalidate your messaging extension results.
 
 ``` TypeScript
-import { TurnContext, CardFactory } from "botbuilder";
-import { MessagingExtensionQuery, MessagingExtensionResult } from "botbuilder-teams";
+import { TurnContext, CardFactory, MessagingExtensionQuery, MessagingExtensionResult } from "botbuilder";
 import { IMessagingExtensionMiddlewareProcessor } from "botbuilder-teams-messagingextensions";
 
 export default class MyMessageExtension implements IMessagingExtensionMiddlewareProcessor {
@@ -75,6 +72,7 @@ export default class MyMessageExtension implements IMessagingExtensionMiddleware
     }
 }
 ```
+
 To add the processor to the pipeline use code similar to this:
 
 ``` TypeScript
@@ -109,17 +107,17 @@ To create an message action that shows a task module for your input define your 
     "id": "createToDoMessageExtension",
     "title": "Create To-Do",
     "description": "Create a To-Do item",
-    "context": ["message", "commandBox", "compose"], 
+    "context": ["message", "commandBox", "compose"],
     "fetchTask": true,
     "type": "action"
 }
 ```
 
-In the processor you need to implement the `onFetchTask` and `onSubmitAction` methods. You can either return a card using the `card` property or 
+In the processor you need to implement the `onFetchTask` and `onSubmitAction` methods. You can either return a card using the `card` property or
 use the `url` parameter to point to a web page.
 
 ``` TypeScript
-public async onFetchTask(context: TurnContext, value: IMessagingExtensionActionRequest): Promise<MessagingExtensionResult | ITaskModuleResult> {
+public async onFetchTask(context: TurnContext, value: MessagingExtensionAction): Promise<MessagingExtensionResult | TaskModuleContinueResponse> {
     return Promise.resolve<ITaskModuleResult>({
         type: "continue",
             value: {
@@ -153,13 +151,12 @@ public async onFetchTask(context: TurnContext, value: IMessagingExtensionActionR
 }
 
 // handle response in here
-public async onSubmitAction(context: TurnContext, value: IMessagingExtensionActionRequest): Promise<MessagingExtensionResult> {
+public async onSubmitAction(context: TurnContext, value: MessagingExtensionAction): Promise<MessagingExtensionResult> {
    const email = value.data.myEmail;
    const id = value.data.id;
    ...
 }
 ```
-
 
 ## Contributors
 
