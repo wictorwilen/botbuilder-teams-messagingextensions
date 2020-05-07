@@ -113,7 +113,7 @@ export class MessagingExtensionMiddleware implements Middleware {
     public async onTurn(context: TurnContext, next: () => Promise<void>): Promise<void> {
         if (context.activity !== undefined && context.activity.name !== undefined) {
             log(`Activity received - activity.name: ${context.activity.name}`);
-            if (this.commandId !== undefined) {
+            if (this.commandId !== undefined && context.activity.value !== undefined) {
                 log(`  commandId: ${context.activity.value.commandId}`);
                 log(`  parameters: ${JSON.stringify(context.activity.value.parameters)}`);
             } else {

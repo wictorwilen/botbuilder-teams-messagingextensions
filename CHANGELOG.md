@@ -5,6 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [*Unreleased*]
+
+### Fixed
+
+* Fixed an issue where `context.activity.value` is undefined (#6, #7)
+
+### Changed
+
+* Moved `botbuilder-core` to `devDependencies`
+
+### Removed
+
+* Removed `ms-rest-js` package (#1)
+
 ## [*1.5.0*] - <*2020-03-05*>
 
 ### Added
