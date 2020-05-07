@@ -163,6 +163,7 @@ public async onSubmitAction(context: TurnContext, value: MessagingExtensionActio
 * [Wictor Wilén](https://github.com/wictorwilen) - Original author and coordinator
 * [Thomas White](https://github.com/tdwhite0)
 * [Bill Bliss](https://github.com/billbliss)
+* [greyseer256](https://github.com/greyseer256)
 
 ## License
 
