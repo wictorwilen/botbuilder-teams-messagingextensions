@@ -264,7 +264,7 @@ export class MessagingExtensionMiddleware implements Middleware {
                         this.processor.onFetchTask) {
                         try {
                             const result = await this.processor.onFetchTask(context, context.activity.value);
-                            const body = result.type === "continue" || result.type === "message" ?
+                            const body = result.type === "message" ?
                                 { task: result } :
                                 { composeExtension: result };
                             context.sendActivity({

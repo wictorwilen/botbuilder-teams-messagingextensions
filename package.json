@@ -41,7 +41,7 @@
     "@types/debug": "^4.1.4",
     "tslint": "^5.14.0",
     "typescript": "^3.3.4000",
-    "botbuilder-core": "~4.7.1"
+    "botbuilder-core": "~4.9.2"
   },
   "dependencies": {
     "debug": "4.1.1"
