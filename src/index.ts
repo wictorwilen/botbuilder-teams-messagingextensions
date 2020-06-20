@@ -250,7 +250,7 @@ export class MessagingExtensionMiddleware implements Middleware {
                     if ((this.commandId === context.activity.value.commandId || this.commandId === undefined) &&
                         (this.processor.onSubmitAction || this.processor.onBotMessagePreviewEdit || this.processor.onBotMessagePreviewSend)) {
                         try {
-                            let result: MessagingExtensionResult | TaskModuleContinueResponse;
+                            let result;
                             let body;
                             switch (context.activity.value.botMessagePreviewAction) {
                                 case "send":
