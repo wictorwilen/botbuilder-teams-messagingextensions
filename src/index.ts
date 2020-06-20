@@ -65,9 +65,9 @@ export interface IMessagingExtensionMiddlewareProcessor {
      * Processes incoming link actions (composeExtension/submitAction) where the `botMessagePreviewAction` is set to `edit`
      * @param context the turn context
      * @param value the value of the query
-     * @returns {Promise<MessagingExtensionResult>}
+     * @returns {Promise<TaskModuleContinueResponse>}
      */
-    onBotMessagePreviewEdit?(context: TurnContext, value: MessagingExtensionAction): Promise<MessagingExtensionResult | TaskModuleContinueResponse>;
+    onBotMessagePreviewEdit?(context: TurnContext, value: MessagingExtensionAction): Promise<TaskModuleContinueResponse>;
     /**
      * Processes incoming fetch task actions (`composeExtension/fetchTask`)
      * @param context the turn context
@@ -250,7 +250,7 @@ export class MessagingExtensionMiddleware implements Middleware {
                     if ((this.commandId === context.activity.value.commandId || this.commandId === undefined) &&
                         (this.processor.onSubmitAction || this.processor.onBotMessagePreviewEdit || this.processor.onBotMessagePreviewSend)) {
                         try {
-                            let result;
+                            let result: MessagingExtensionResult | TaskModuleContinueResponse;
                             let body;
                             switch (context.activity.value.botMessagePreviewAction) {
                                 case "send":
