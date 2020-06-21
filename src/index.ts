@@ -262,6 +262,7 @@ export class MessagingExtensionMiddleware implements Middleware {
                                     body = {
                                         task: result,
                                     };
+                                    break;
                                 default:
                                     result = await this.processor.onSubmitAction(context, context.activity.value);
                                     body = {
