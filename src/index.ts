@@ -55,6 +55,20 @@ export interface IMessagingExtensionMiddlewareProcessor {
      */
     onSubmitAction?(context: TurnContext, value: MessagingExtensionAction): Promise<MessagingExtensionResult>;
     /**
+     * Processes incoming link actions (composeExtension/submitAction) where the `botMessagePreviewAction` is set to `send`
+     * @param context the turn context
+     * @param value the value of the query
+     * @returns {Promise<MessagingExtensionResult>}
+     */
+    onBotMessagePreviewSend?(context: TurnContext, value: MessagingExtensionAction): Promise<MessagingExtensionResult>;
+    /**
+     * Processes incoming link actions (composeExtension/submitAction) where the `botMessagePreviewAction` is set to `edit`
+     * @param context the turn context
+     * @param value the value of the query
+     * @returns {Promise<TaskModuleContinueResponse>}
+     */
+    onBotMessagePreviewEdit?(context: TurnContext, value: MessagingExtensionAction): Promise<TaskModuleContinueResponse>;
+    /**
      * Processes incoming fetch task actions (`composeExtension/fetchTask`)
      * @param context the turn context
      * @param value commandContext
@@ -234,15 +248,33 @@ export class MessagingExtensionMiddleware implements Middleware {
                     break;
                 case "composeExtension/submitAction":
                     if ((this.commandId === context.activity.value.commandId || this.commandId === undefined) &&
-                        this.processor.onSubmitAction) {
+                        (this.processor.onSubmitAction || this.processor.onBotMessagePreviewEdit || this.processor.onBotMessagePreviewSend)) {
                         try {
-                            const result = await this.processor.onSubmitAction(context, context.activity.value);
+                            let result;
+                            let body;
+                            switch (context.activity.value.botMessagePreviewAction) {
+                                case "send":
+                                    result = await this.processor.onBotMessagePreviewSend(context, context.activity.value);
+                                    body = result;
+                                    break;
+                                case "edit":
+                                    result = await this.processor.onBotMessagePreviewEdit(context, context.activity.value);
+                                    body = {
+                                        task: result,
+                                    };
+                                    break;
+                                default:
+                                    result = await this.processor.onSubmitAction(context, context.activity.value);
+                                    body = {
+                                        composeExtension: result,
+                                    };
+                                    break;
+                            }
+
                             context.sendActivity({
                                 type: INVOKERESPONSE,
                                 value: {
-                                    body: {
-                                        composeExtension: result,
-                                    },
+                                    body,
                                     status: 200,
                                 },
                             });
