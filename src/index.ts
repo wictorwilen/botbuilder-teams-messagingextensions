@@ -1,7 +1,7 @@
 // Copyright (c) Wictor Wilén. All rights reserved.
 // Licensed under the MIT license.
 
-import { Middleware, TurnContext } from "botbuilder-core";
+import { Middleware, TurnContext, BotMessagePreviewActionType, TaskModuleMessageResponse } from "botbuilder-core";
 import {
     ActivityTypes,
     AppBasedLinkQuery,
@@ -60,7 +60,7 @@ export interface IMessagingExtensionMiddlewareProcessor {
      * @param value commandContext
      * @returns {Promise<MessagingExtensionResult | TaskModuleContinueResponse>} Promise object is either a `MessagingExtensionResult` for `conf` or `auth` or a `TaskModuleContinueResponse` for `message` or `continue`
      */
-    onFetchTask?(context: TurnContext, value: MessagingExtensionAction): Promise<MessagingExtensionResult | TaskModuleContinueResponse>;
+    onFetchTask?(context: TurnContext, value: MessagingExtensionAction): Promise<MessagingExtensionResult | TaskModuleContinueResponse | TaskModuleMessageResponse>;
     /**
      * Handles Action.Submit from adaptive cards
      *
@@ -264,6 +264,7 @@ export class MessagingExtensionMiddleware implements Middleware {
                         this.processor.onFetchTask) {
                         try {
                             const result = await this.processor.onFetchTask(context, context.activity.value);
+
                             const body = result.type === "continue" || result.type === "message" ?
                                 { task: result } :
                                 { composeExtension: result };
