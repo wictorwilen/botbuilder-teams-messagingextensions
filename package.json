@@ -1,6 +1,6 @@
 {
   "name": "botbuilder-teams-messagingextensions",
-  "version": "1.7.0-preview",
+  "version": "1.7.0-preview2",
   "description": "Microsoft Bot Builder Framework v4 middleware for Microsoft Teams Messaging Extensions",
   "main": "lib/index.js",
   "scripts": {
@@ -26,7 +26,8 @@
   "contributors": [
     "White, Thomas <https://github.com/tdwhite0>",
     "Bliss, Bill <https://github.com/billbliss>",
-    "<https://github.com/greyseer256>"
+    "<https://github.com/greyseer256>",
+    "<https://github.com/kavins14>"
   ],
   "repository": {
     "type": "git",

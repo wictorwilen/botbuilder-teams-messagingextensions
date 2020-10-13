@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 * Using bot framework `^4.9.0`
 
+### Added
+
+* Support for `botMessagePreview` (#10)
+
 ## [*1.6.0*] - <*2020-05-17*>
 
 ### Fixed
