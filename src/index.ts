@@ -1,7 +1,7 @@
 // Copyright (c) Wictor Wilén. All rights reserved.
 // Licensed under the MIT license.
 
-import { Middleware, TurnContext, BotMessagePreviewActionType, TaskModuleMessageResponse } from "botbuilder-core";
+import { BotMessagePreviewActionType, Middleware, TaskModuleMessageResponse, TurnContext } from "botbuilder-core";
 import {
     ActivityTypes,
     AppBasedLinkQuery,

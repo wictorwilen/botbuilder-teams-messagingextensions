@@ -164,6 +164,7 @@ public async onSubmitAction(context: TurnContext, value: MessagingExtensionActio
 * [Thomas White](https://github.com/tdwhite0)
 * [Bill Bliss](https://github.com/billbliss)
 * [greyseer256](https://github.com/greyseer256)
+* [Kavin Singh](https://github.com/kavins14)
 
 ## License
 

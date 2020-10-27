@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [*Unreleased*]
+## [*1.7.0*] - <*2020-10-27*>
 
 ### Changes
 
@@ -13,7 +13,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Added
 
-* Support for `botMessagePreview` (#10)
+* Support for `send` and `edit` for `submitActions` (#10)
 
 ## [*1.6.0*] - <*2020-05-17*>
 
