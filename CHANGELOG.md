@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [*Unreleased*] - <**>
+
+### Added
+
+* Added support for Adaptive Cards 1.4 universal actions `adaptiveCard/action`
+* Added unit tests
+
+### Changes
+
+* Moved from Travis CI to Github Actions
+* Migrated from TSLint to ESLint
+
 ## [*1.7.0*] - <*2020-10-27*>
 
 ### Changes

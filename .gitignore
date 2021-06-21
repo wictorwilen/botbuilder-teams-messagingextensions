@@ -11,3 +11,5 @@ node_modules/
 dist
 lib
 .vscode
+junit.xml
+coverage
