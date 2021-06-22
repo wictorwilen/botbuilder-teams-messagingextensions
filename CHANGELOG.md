@@ -10,12 +10,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 * Added support for Adaptive Cards 1.4 universal actions `adaptiveCard/action`
-* Added unit tests
+* Added unit tests - 100% code coverage
 
 ### Changes
 
 * Moved from Travis CI to Github Actions
 * Migrated from TSLint to ESLint
+
+### Fixes
+
+* Fixed issues where submitAction could return an error if overrides was not defined
+* Fixed an issue where selectItem returned a success even when an error occurred
 
 ## [*1.7.0*] - <*2020-10-27*>
 

@@ -297,37 +297,44 @@ export class MessagingExtensionMiddleware implements Middleware {
                     }
                     break;
                 case "composeExtension/submitAction":
-                    if ((this.commandId === context.activity.value.commandId || this.commandId === undefined) &&
-                        (this.processor.onSubmitAction || this.processor.onBotMessagePreviewEdit || this.processor.onBotMessagePreviewSend)) {
+                    if (this.commandId === context.activity.value.commandId || this.commandId === undefined) {
                         try {
                             let result;
                             let body;
                             switch (context.activity.value.botMessagePreviewAction) {
                                 case "send":
-                                    result = await this.processor.onBotMessagePreviewSend(context, context.activity.value);
-                                    body = result;
+                                    if (this.processor.onBotMessagePreviewSend) {
+                                        result = await this.processor.onBotMessagePreviewSend(context, context.activity.value);
+                                        body = result;
+                                    }
                                     break;
                                 case "edit":
-                                    result = await this.processor.onBotMessagePreviewEdit(context, context.activity.value);
-                                    body = {
-                                        task: result
-                                    };
+                                    if (this.processor.onBotMessagePreviewEdit) {
+                                        result = await this.processor.onBotMessagePreviewEdit(context, context.activity.value);
+                                        body = {
+                                            task: result
+                                        };
+                                    }
                                     break;
                                 default:
-                                    result = await this.processor.onSubmitAction(context, context.activity.value);
-                                    body = {
-                                        composeExtension: result
-                                    };
+                                    if (this.processor.onSubmitAction) {
+                                        result = await this.processor.onSubmitAction(context, context.activity.value);
+                                        body = {
+                                            composeExtension: result
+                                        };
+                                    }
                                     break;
                             }
-
-                            context.sendActivity({
-                                type: INVOKERESPONSE,
-                                value: {
-                                    body,
-                                    status: 200
-                                }
-                            });
+                            if (result) {
+                                context.sendActivity({
+                                    type: INVOKERESPONSE,
+                                    value: {
+                                        body,
+                                        status: 200
+                                    }
+                                });
+                                return;
+                            }
                         } catch (err) {
                             context.sendActivity({
                                 type: INVOKERESPONSE,
@@ -336,8 +343,9 @@ export class MessagingExtensionMiddleware implements Middleware {
                                     status: 500
                                 }
                             });
+                            return;
                         }
-                        return;
+
                     }
                     break;
                 case "composeExtension/fetchTask":
@@ -403,19 +411,20 @@ export class MessagingExtensionMiddleware implements Middleware {
                                     status: 200
                                 }
                             });
-                            return;
-                            // we're doing a return here and not next() so we're not colliding with
-                            // any botbuilder-teams invoke things. This however will also invalidate the use
-                            // of multiple message extensions using selectItem - only the first one will be triggered
                         } catch (err) {
                             context.sendActivity({
                                 type: INVOKERESPONSE,
                                 value: {
                                     body: err,
-                                    status: 200
+                                    status: 500
                                 }
                             });
                         }
+                        return;
+                        // we're doing a return here and not next() so we're not colliding with
+                        // any botbuilder-teams invoke things. This however will also invalidate the use
+                        // of multiple message extensions using selectItem - only the first one will be triggered
+
                     }
                     break;
                 case "adaptiveCard/action":
