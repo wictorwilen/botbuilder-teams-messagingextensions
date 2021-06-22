@@ -785,7 +785,6 @@ describe("index", () => {
             expect(next).not.toBeCalled();
         });
 
-
         it("Should handle onFetchTask error", async () => {
             processor.onFetchTask = jest.fn().mockRejectedValue("error");
             const mw = new exp.MessagingExtensionMiddleware("command", processor);

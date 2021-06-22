@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Added
 
-* Added support for Adaptive Cards 1.4 universal actions `adaptiveCard/action`
+* Added support for Adaptive Cards 1.4 universal actions `adaptiveCard/action` (#12)
 * Added unit tests - 100% code coverage
 
 ### Changes
