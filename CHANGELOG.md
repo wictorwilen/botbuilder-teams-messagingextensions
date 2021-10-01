@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 * Moved from Travis CI to Github Actions
 * Migrated from TSLint to ESLint
+* Migrated to botbuilder 4.14.1
 
 ### Fixes
 
