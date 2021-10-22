@@ -8,3 +8,8 @@ tsconfig.json
 *.spec.js
 .travis.yml
 tslint.json
+.github
+.eslintrc.json
+junit.xml
+jest.config.js
+coverage

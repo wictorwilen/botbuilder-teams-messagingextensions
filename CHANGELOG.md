@@ -5,6 +5,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [*1.8.0*] - <*2021-10-22*>
+
+### Added
+
+* Added support for Adaptive Cards 1.4 universal actions `adaptiveCard/action` (#12)
+* Added unit tests - 100% code coverage
+
+### Changes
+
+* Moved from Travis CI to Github Actions
+* Migrated from TSLint to ESLint
+* Migrated to botbuilder 4.14.1
+
+### Fixes
+
+* Fixed issues where submitAction could return an error if overrides was not defined
+* Fixed an issue where selectItem returned a success even when an error occurred
+
 ## [*1.7.0*] - <*2020-10-27*>
 
 ### Changes
