@@ -19,6 +19,6 @@ module.exports = {
         "!<rootDir>/node_modules/"
     ],
     coverageReporters: [
-        "text", "html"
+        "text", "html", "lcov"
     ]
 };
